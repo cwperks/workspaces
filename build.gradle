@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'opensearch.opensearchplugin'
+}
+
+opensearchplugin {
+    name = 'opensearch-workspaces'
+    description = 'Backend plugin for workspace management with resource sharing integration'
+    classname = 'org.opensearch.workspaces.WorkspacesPlugin'
+    extendedPlugins = ['opensearch-security']
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+    compileOnly "org.opensearch:opensearch:${opensearch_version}"
+    compileOnly "org.opensearch.plugin:opensearch-security-spi:${opensearch_version}"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
