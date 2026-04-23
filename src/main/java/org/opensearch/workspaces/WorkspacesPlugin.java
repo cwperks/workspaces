@@ -1,6 +1,10 @@
 /*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
  */
 
 package org.opensearch.workspaces;
@@ -8,7 +12,6 @@ package org.opensearch.workspaces;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
-
 import org.opensearch.action.ActionRequest;
 import org.opensearch.cluster.metadata.IndexNameExpressionResolver;
 import org.opensearch.cluster.node.DiscoveryNodes;
@@ -40,59 +43,56 @@ import org.opensearch.workspaces.service.WorkspaceIndexService;
 
 public class WorkspacesPlugin extends Plugin implements ActionPlugin, IdentityAwarePlugin {
 
-    private PluginClient pluginClient;
+  private PluginClient pluginClient;
 
-    @Override
-    public Collection<Object> createComponents(
-        Client client,
-        ClusterService clusterService,
-        ThreadPool threadPool,
-        ResourceWatcherService resourceWatcherService,
-        ScriptService scriptService,
-        NamedXContentRegistry xContentRegistry,
-        Environment environment,
-        NodeEnvironment nodeEnvironment,
-        NamedWriteableRegistry namedWriteableRegistry,
-        IndexNameExpressionResolver indexNameExpressionResolver,
-        Supplier<RepositoriesService> repositoriesServiceSupplier
-    ) {
-        this.pluginClient = new PluginClient(client);
-        WorkspaceIndexService workspaceIndexService = new WorkspaceIndexService(pluginClient, clusterService);
-        return List.of(pluginClient, workspaceIndexService);
-    }
+  @Override
+  public Collection<Object> createComponents(
+      Client client,
+      ClusterService clusterService,
+      ThreadPool threadPool,
+      ResourceWatcherService resourceWatcherService,
+      ScriptService scriptService,
+      NamedXContentRegistry xContentRegistry,
+      Environment environment,
+      NodeEnvironment nodeEnvironment,
+      NamedWriteableRegistry namedWriteableRegistry,
+      IndexNameExpressionResolver indexNameExpressionResolver,
+      Supplier<RepositoriesService> repositoriesServiceSupplier) {
+    this.pluginClient = new PluginClient(client);
+    WorkspaceIndexService workspaceIndexService =
+        new WorkspaceIndexService(pluginClient, clusterService);
+    return List.of(pluginClient, workspaceIndexService);
+  }
 
-    @Override
-    public List<RestHandler> getRestHandlers(
-        Settings settings,
-        RestController restController,
-        ClusterSettings clusterSettings,
-        IndexScopedSettings indexScopedSettings,
-        SettingsFilter settingsFilter,
-        IndexNameExpressionResolver indexNameExpressionResolver,
-        Supplier<DiscoveryNodes> nodesInCluster
-    ) {
-        return List.of(
-            new CreateWorkspaceRestAction(),
-            new GetWorkspaceRestAction(),
-            new ListWorkspacesRestAction(),
-            new UpdateWorkspaceRestAction(),
-            new DeleteWorkspaceRestAction()
-        );
-    }
+  @Override
+  public List<RestHandler> getRestHandlers(
+      Settings settings,
+      RestController restController,
+      ClusterSettings clusterSettings,
+      IndexScopedSettings indexScopedSettings,
+      SettingsFilter settingsFilter,
+      IndexNameExpressionResolver indexNameExpressionResolver,
+      Supplier<DiscoveryNodes> nodesInCluster) {
+    return List.of(
+        new CreateWorkspaceRestAction(),
+        new GetWorkspaceRestAction(),
+        new ListWorkspacesRestAction(),
+        new UpdateWorkspaceRestAction(),
+        new DeleteWorkspaceRestAction());
+  }
 
-    @Override
-    public List<ActionHandler<? extends ActionRequest, ? extends ActionResponse>> getActions() {
-        return List.of(
-            new ActionHandler<>(CreateWorkspaceAction.INSTANCE, CreateWorkspaceTransportAction.class),
-            new ActionHandler<>(GetWorkspaceAction.INSTANCE, GetWorkspaceTransportAction.class),
-            new ActionHandler<>(ListWorkspacesAction.INSTANCE, ListWorkspacesTransportAction.class),
-            new ActionHandler<>(UpdateWorkspaceAction.INSTANCE, UpdateWorkspaceTransportAction.class),
-            new ActionHandler<>(DeleteWorkspaceAction.INSTANCE, DeleteWorkspaceTransportAction.class)
-        );
-    }
+  @Override
+  public List<ActionHandler<? extends ActionRequest, ? extends ActionResponse>> getActions() {
+    return List.of(
+        new ActionHandler<>(CreateWorkspaceAction.INSTANCE, CreateWorkspaceTransportAction.class),
+        new ActionHandler<>(GetWorkspaceAction.INSTANCE, GetWorkspaceTransportAction.class),
+        new ActionHandler<>(ListWorkspacesAction.INSTANCE, ListWorkspacesTransportAction.class),
+        new ActionHandler<>(UpdateWorkspaceAction.INSTANCE, UpdateWorkspaceTransportAction.class),
+        new ActionHandler<>(DeleteWorkspaceAction.INSTANCE, DeleteWorkspaceTransportAction.class));
+  }
 
-    @Override
-    public void assignSubject(PluginSubject pluginSubject) {
-        this.pluginClient.setSubject(pluginSubject);
-    }
+  @Override
+  public void assignSubject(PluginSubject pluginSubject) {
+    this.pluginClient.setSubject(pluginSubject);
+  }
 }

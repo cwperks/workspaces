@@ -1,0 +1,5 @@
+org.opensearch.workspaces
+org.opensearch.workspaces.action
+org.opensearch.workspaces.model
+org.opensearch.workspaces.rest
+org.opensearch.workspaces.service

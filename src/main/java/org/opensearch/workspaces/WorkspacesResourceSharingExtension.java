@@ -1,6 +1,10 @@
 /*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
  */
 
 package org.opensearch.workspaces;
@@ -12,30 +16,29 @@ import org.opensearch.security.spi.resources.client.ResourceSharingClient;
 
 public class WorkspacesResourceSharingExtension implements ResourceSharingExtension {
 
-    @Override
-    public Set<ResourceProvider> getResourceProviders() {
-        return Set.of(
-            new ResourceProvider() {
-                @Override
-                public String resourceType() {
-                    return Constants.WORKSPACE_RESOURCE_TYPE;
-                }
+  @Override
+  public Set<ResourceProvider> getResourceProviders() {
+    return Set.of(
+        new ResourceProvider() {
+          @Override
+          public String resourceType() {
+            return Constants.WORKSPACE_RESOURCE_TYPE;
+          }
 
-                @Override
-                public String resourceIndexName() {
-                    return ".kibana*";
-                }
+          @Override
+          public String resourceIndexName() {
+            return ".kibana*";
+          }
 
-                @Override
-                public String typeField() {
-                    return "type";
-                }
-            }
-        );
-    }
+          @Override
+          public String typeField() {
+            return "type";
+          }
+        });
+  }
 
-    @Override
-    public void assignResourceSharingClient(ResourceSharingClient resourceSharingClient) {
-        // Workspaces relies on security's REST APIs for sharing
-    }
+  @Override
+  public void assignResourceSharingClient(ResourceSharingClient resourceSharingClient) {
+    // Workspaces relies on security's REST APIs for sharing
+  }
 }

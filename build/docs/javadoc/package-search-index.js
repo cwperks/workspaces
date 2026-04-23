@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.opensearch.workspaces"},{"l":"org.opensearch.workspaces.action"},{"l":"org.opensearch.workspaces.model"},{"l":"org.opensearch.workspaces.rest"},{"l":"org.opensearch.workspaces.service"}];updateSearchResults();
